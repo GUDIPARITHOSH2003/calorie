@@ -8,6 +8,7 @@ const port=process.env.PORT || 5000
 const foodRoutes=require("./routes/admin.route")
 const authRoutes=require("./routes/auth.route")
 const profileRoutes=require("./routes/profile.route")
+const dashboardRoutes=require("./routes/dashboard.route")
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
 
@@ -33,6 +34,7 @@ async function main(){
     app.use('/admin',foodRoutes(db))
     app.use('/auth',authRoutes(db))
     app.use('/user',profileRoutes(db))
+    app.use('/dashboard',dashboardRoutes(db))
 
     //port connection
     app.listen(port,(err)=>{

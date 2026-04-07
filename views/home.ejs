@@ -59,10 +59,63 @@
             transform: translateY(-2px);
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
     <h1>Home Page</h1>
     <a href="/user/profile">Profile</a>
+    <h2>Todays Amount</h2>
+    <div id="food-container"></div>
+    <script>
+        async function loadTodayItems(){
+            try{
+                const res=await axios.get('/dashboard/today-items',{
+                    withCredentials:true
+                })
+                const data=res.data
+                const container=document.getElementById('food-container')
+                container.innerHTML=''
+                result={
+                    calories:0,
+                    protein:0,
+                    carbs:0,
+                    fiber:0,
+                    fat:0  
+                }
+                if(data.length===0){
+                    container.innerHTML=`
+                        <div class="card">
+                            <p>Calories: ${result.calories}</p>
+                            <p>Protein: ${result.protein}</p>
+                            <p>Carbs: ${result.carbs}</p>
+                            <p>Fiber: ${result.fiber}</p>
+                            <p>Fat: ${result.fat}</p>
+                        </div>
+                    `
+                    return
+                }
+                data.forEach((item)=>{
+                    result.calories+=item.calories
+                    result.protein+=item.protein
+                    result.carbs+=item.carbs
+                    result.fiber+=item.fiber
+                    result.fat+=item.fat
+                })
+                container.innerHTML=`
+                    <div class="card">
+                            <p>Calories: ${result.calories}</p>
+                            <p>Protein: ${result.protein}</p>
+                            <p>Carbs: ${result.carbs}</p>
+                            <p>Fiber: ${result.fiber}</p>
+                            <p>Fat: ${result.fat}</p>
+                    </div>
+                `
+            }catch(err){
+                console.log(err)
+            }
+        }
+        loadTodayItems()
+    </script>
 </body>
 </html>

@@ -8,7 +8,7 @@ function foodRoutes(db) {
         await collection.insertOne({
             name,quantity,calories,protein,fiber,fat
         })
-        res.status(201).send('Item Added succesfully')
+        res.redirect('/admin')
     })
     router.get('/all-items',async (req,res)=>{
         let data = await collection.find({}).toArray()
