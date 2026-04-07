@@ -18,7 +18,7 @@ async function userLogin(req,res){
     }
     const token=jwt.sign({userId:user._id},process.env.JWT_SECRET)
     res.cookie("token",token)
-    res.render('home')
+    res.redirect('/user')
 }
 async function userRegister(req,res){
     const {name,email,password,age,weight,height}=req.body
@@ -34,7 +34,7 @@ async function userRegister(req,res){
     })
     let token=jwt.sign({userId:user._id},process.env.JWT_SECRET)
     res.cookie("token",token)
-    res.render('home')
+    res.redirect('/user')
 }
 module.exports={
     userLogin,
