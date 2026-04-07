@@ -67,6 +67,17 @@
     <a href="/user/profile">Profile</a>
     <h2>Todays Amount</h2>
     <div id="food-container"></div>
+    <form action="/dashboard/add-item" method="post">
+    <div>
+        <input type="text" name="itemName" placeholder="itemName">
+        <input type="number" name="calories" placeholder="calories">
+        <input type="number" name="protein" placeholder="protein">
+        <input type="number" name="carbs" placeholder="carbs">
+        <input type="number" name="fiber" placeholder="fiber">
+        <input type="number" name="fat" placeholder="fat">
+        <button type="submit">Add Item</button>
+    </div>
+    </form>
     <script>
         async function loadTodayItems(){
             try{
