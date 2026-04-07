@@ -12,11 +12,15 @@ function foodRoutes(db) {
     })
     router.get('/all-items',async (req,res)=>{
         let data = await collection.find({}).toArray()
-        res.send(data)
+        res.render('adminDisplay',{data})
+        // res.send(data)
     })
-    router.delete('/delete/:id',async (req,res)=>{
+    router.post('/delete/:id',async (req,res)=>{
         await collection.deleteOne({_id:new ObjectId(req.params.id)})
-        res.send('Item deleted succesfully')
+        res.redirect('/admin/all-items')
+    })
+    router.get('/',(req,res)=>{
+        res.render('admin')
     })
     return router
 }

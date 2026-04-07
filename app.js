@@ -6,8 +6,14 @@ require('dotenv').config()
 const port=process.env.PORT || 5000
 const foodRoutes=require("./routes/admin.route")
 const authRoutes=require("./routes/auth.route")
+
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
+
 let db;
+app.set('view engine', 'ejs')
+app.set('views','./views')
+
 async function main(){
     //db connection
     const client=new MongoClient(process.env.MONGO_URI)

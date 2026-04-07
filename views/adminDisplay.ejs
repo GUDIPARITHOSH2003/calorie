@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <%for(let i=0;i<data.length;i++){%>
+            <form action="/admin/delete/<%=data[i]._id%>" method="post">
+                <h2>Name : <%=data[i].name%></h2>
+                <h3>Quantity : <%=data[i].quantity%></h3>
+                <h3>Calories : <%=data[i].calories%></h3>
+                <h3>Protein : <%=data[i].protein%></h3>
+                <h3>Fiber : <%=data[i].fiber%></h3>
+                <h3>Fat : <%=data[i].fat%></h3>
+                <button type="submit">Delete</button>
+            </form>
+        <%}%>
+    </div>
+</body>
+</html>

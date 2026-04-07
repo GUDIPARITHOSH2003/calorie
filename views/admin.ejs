@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Admin Page</h1>
+    <div>
+        <form action="/admin/add-food" method="post">
+            <input type="text" name="name" placeholder="name">
+            <input type="number" name="quantity" step="any" placeholder="quantity">
+            <input type="number" name="calories" step="any" placeholder="calories">
+            <input type="number" name="protein" step="any" placeholder="protein">
+            <input type="number" name="fiber" step="any" placeholder="fiber">
+            <input type="number" name="fat" step="any" placeholder="fat">
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div>
+        <form action="/admin/all-items" method="get">
+            <button type="submit">Get all items</button>
+        </form>
+    </div>
+    
+</body>
+</html>
