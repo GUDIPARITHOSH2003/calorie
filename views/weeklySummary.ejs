@@ -3,12 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Weekly Summary - Calorie Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --surface-hover: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #60a5fa;
+            --danger: #ef4444;
+            --danger-hover: #f87171;
+            --success: #10b981;
+            --border-color: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15), transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15), transparent 50%);
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .navbar h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: var(--surface-hover);
+        }
+
+        .nav-links a.logout-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .nav-links a.logout-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Card Style */
+        .card {
+            background: var(--surface-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .card-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-box {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-value.calories { color: var(--accent); }
+        .stat-value.protein { color: #8b5cf6; }
+        .stat-value.carbs { color: #f59e0b; }
+        .stat-value.fat { color: #ef4444; }
+        .stat-value.fiber { color: #10b981; }
+
+        .no-items {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 2rem;
+            font-size: 1.1rem;
+        }
+    </style>
 </head>
 <body>
-    <h1>Weekly Summary</h1>
-    <div id="food-container"></div>
+    <nav class="navbar">
+        <h1>Calorie Tracker</h1>
+        <div class="nav-links">
+            <a href="/user">Home</a>
+            <a href="/user/profile">Profile</a>
+            <a href="/auth/logout" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 style="font-size: 1.8rem; font-weight: 700; color: var(--text-primary); margin-bottom: -0.5rem;">Weekly Summary</h1>
+        <div id="food-container" style="display: flex; flex-direction: column; gap: 2rem;"></div>
+    </div>
+
     <script>
         async function loadWeeklyItems(){
             try{
@@ -21,21 +201,40 @@
                 container.innerHTML=''
                 if(data.length===0){
                     container.innerHTML= `
-                        <div>
-                            <p>No Items Yet</p>
+                        <div class="card">
+                            <p class="no-items">No Items Yet</p>
                         </div>
                     `
                     return
                 }
                 data.forEach((item)=>{
                     container.innerHTML+=`
-                        <div>
-                            <h2>${days[item.day]}</h2>
-                            <h3>Total Calories : ${item.totalCalories}</h3>
-                            <h3>Total Protein : ${item.totalProtein}</h3>
-                            <h3>Total Carbs : ${item.totalCarbs}</h3>
-                            <h3>Total Fiber : ${item.totalFiber}</h3>
-                            <h3>Total Fat : ${item.totalFat}</h3>
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>${days[item.day]}</h2>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-box">
+                                    <div class="stat-label">Calories</div>
+                                    <div class="stat-value calories">${item.totalCalories}</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-label">Protein</div>
+                                    <div class="stat-value protein">${item.totalProtein}</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-label">Carbs</div>
+                                    <div class="stat-value carbs">${item.totalCarbs}</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-label">Fiber</div>
+                                    <div class="stat-value fiber">${item.totalFiber}</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-label">Fat</div>
+                                    <div class="stat-value fat">${item.totalFat}</div>
+                                </div>
+                            </div>
                         </div>
                     `
                 })
