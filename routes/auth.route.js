@@ -10,6 +10,10 @@ function authRoutes(db){
     router.get('/register-page',(req,res)=>{
         res.render('register')
     })
+    router.get('/logout',(req,res)=>{
+        res.clearCookie("token")
+        res.redirect('/auth')
+    })
     return router
 }
 module.exports=authRoutes

@@ -3,12 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Today's List - Calorie Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --surface-hover: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #60a5fa;
+            --danger: #ef4444;
+            --danger-hover: #f87171;
+            --border-color: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15), transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15), transparent 50%);
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .navbar h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            width: 100%;
+            flex: 1;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .page-header h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Food Container */
+        #food-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--surface-color);
+            border-radius: 1rem;
+            border: 1px dashed var(--border-color);
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Card Style */
+        .card {
+            background: var(--surface-color);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: var(--accent);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+            text-transform: capitalize;
+        }
+
+        .macros-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .macro-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .macro-label {
+            color: var(--text-secondary);
+        }
+
+        .macro-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .macro-value.calories { color: var(--accent); }
+
+        .btn-delete {
+            margin-top: auto;
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-delete:hover {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+    </style>
 </head>
 <body>
-    <h1>Today List</h1>
-    <div id="food-container"></div>
+    <nav class="navbar">
+        <h1>Calorie Tracker</h1>
+        <div class="nav-links">
+            <!-- fallback using browser back string or explicitly going home -->
+            <a href="javascript:history.back()">Back</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Today's List</h2>
+        </div>
+        <div id="food-container"></div>
+    </div>
+
     <script>
         async function getTodayItems(){
             try{
@@ -19,19 +226,36 @@
                 const container=document.getElementById('food-container')
                 container.innerHTML=''
                 if(data.length===0){
-                    container.innerHTML='No Items added'
+                    container.innerHTML='<div class="empty-state">No items added today.</div>'
                     return
                 }
                 data.forEach((item)=>{
                     container.innerHTML+=`
                         <div class="card">
-                            <h3>itemName: ${item.itemName}</h3>
-                            <p>Calories: ${item.calories}</p>
-                            <p>Protein: ${item.protein}</p>
-                            <p>Carbs: ${item.carbs}</p>
-                            <p>Fiber: ${item.fiber}</p>
-                            <p>Fat: ${item.fat}</p>
-                            <button onclick="deleteItem('${item._id}')" type="submit">Delete</button>
+                            <h3>${item.itemName}</h3>
+                            <div class="macros-grid">
+                                <div class="macro-item">
+                                    <span class="macro-label">Calories</span>
+                                    <span class="macro-value calories">${item.calories}</span>
+                                </div>
+                                <div class="macro-item">
+                                    <span class="macro-label">Protein</span>
+                                    <span class="macro-value">${item.protein}</span>
+                                </div>
+                                <div class="macro-item">
+                                    <span class="macro-label">Carbs</span>
+                                    <span class="macro-value">${item.carbs}</span>
+                                </div>
+                                <div class="macro-item">
+                                    <span class="macro-label">Fiber</span>
+                                    <span class="macro-value">${item.fiber}</span>
+                                </div>
+                                <div class="macro-item">
+                                    <span class="macro-label">Fat</span>
+                                    <span class="macro-value">${item.fat}</span>
+                                </div>
+                            </div>
+                            <button class="btn-delete" onclick="deleteItem('${item._id}')" type="button">Delete</button>
                         </div>
                     `
                 })
