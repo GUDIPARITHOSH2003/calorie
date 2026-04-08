@@ -35,6 +35,12 @@ const foodSchema=new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now   
+    },
+    dayIndex: {
+        type: Number,
+        default: function () {
+            return new Date().getDay();
+        }
     }
 })
 const foodModel=mongoose.model('food',foodSchema)

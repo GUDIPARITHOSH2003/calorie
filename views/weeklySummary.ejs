@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>Weekly Summary</h1>
+    <div id="food-container"></div>
+    <script>
+        async function loadWeeklyItems(){
+            try{
+                const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+                const res=await axios.get('/dashboard/weekly-summary',{
+                    withCredentials:true
+                })
+                const data=res.data.data
+                const container=document.getElementById('food-container')
+                container.innerHTML=''
+                if(data.length===0){
+                    container.innerHTML= `
+                        <div>
+                            <p>No Items Yet</p>
+                        </div>
+                    `
+                    return
+                }
+                data.forEach((item)=>{
+                    container.innerHTML+=`
+                        <div>
+                            <h2>${days[item.day]}</h2>
+                            <h3>Total Calories : ${item.totalCalories}</h3>
+                            <h3>Total Protein : ${item.totalProtein}</h3>
+                            <h3>Total Carbs : ${item.totalCarbs}</h3>
+                            <h3>Total Fiber : ${item.totalFiber}</h3>
+                            <h3>Total Fat : ${item.totalFat}</h3>
+                        </div>
+                    `
+                })
+
+            }catch(err){
+                console.log(err)
+            }
+        }
+        loadWeeklyItems()
+    </script>
+</body>
+</html>
