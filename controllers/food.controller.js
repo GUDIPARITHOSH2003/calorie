@@ -1,5 +1,6 @@
 const express=require("express")
 const foodModel=require("../models/food.model")
+const itemModel=require("../models/items.model")
 async function addItem(req,res){
     let {itemName,quantity,calories,protein,carbs,fiber,fat}=req.body
     let user=req.user
@@ -36,9 +37,32 @@ async function deleteItem(req,res){
         message:'item deleted successfully'
     })
 }
+async function searchItem(req,res){
+    let {itemName,userQuantity}=req.body;
+    itemName = itemName.replace(/\s+/g, "").toLowerCase();
+    let data=await itemModel.findOne({itemName})
+    if(!data){
+        return res.status(409).json({
+            messgae:'item not found enter manually'
+        })
+    }
+    let result={}
+    let factor=userQuantity/100
+    result.userId=req.user._id
+    result.itemName=data.itemName
+    result.quantity=userQuantity
+    result.calories=data.calories*factor
+    result.protein=data.protein*factor
+    result.carbs=data.carbs*factor
+    result.fiber=data.fiber*factor
+    result.fat=data.fat*factor
+    let newFood=await foodModel.create(result)
+    res.redirect('/user')
+}
 module.exports={
     addItem,
     getToday,
     getTodayList,
-    deleteItem
+    deleteItem,
+    searchItem
 }

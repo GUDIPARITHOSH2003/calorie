@@ -7,7 +7,7 @@ function dashboardRoutes(){
     router.get('/today-items',authMiddleware.isLogged,foodController.getToday)
     router.get('/today-list',authMiddleware.isLogged,foodController.getTodayList)
     router.delete('/delete-item/:id',authMiddleware.isLogged,foodController.deleteItem)
-    // router.post('/search-item',authMiddleware.isLogged,foodController.searchItem)
+    router.post('/search-item',authMiddleware.isLogged,foodController.searchItem)
     return router
 }
 module.exports=dashboardRoutes
