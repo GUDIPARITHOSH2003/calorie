@@ -3,14 +3,25 @@ const app=express()
 const {MongoClient,ObjectId} = require('mongodb')
 const mongoose=require("mongoose")
 const cookieParser=require("cookie-parser");
+const passport=require("passport")
+const session=require("express-session")
 require('dotenv').config()
+
 const port=process.env.PORT || 5000
 const foodRoutes=require("./routes/admin.route")
 const authRoutes=require("./routes/auth.route")
 const profileRoutes=require("./routes/profile.route")
 const dashboardRoutes=require("./routes/dashboard.route")
+require("./config/passport");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
+app.use(session({
+    secret:'secretkey',
+    resave:false,
+    saveUninitialized:true
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 
 let db;
 app.set('view engine', 'ejs')
@@ -29,7 +40,8 @@ async function main(){
         dbName: "calorie"
     });
     console.log("Mongoose Connected");
-
+    // console.log("ENV CHECK:", process.env.MY_GOOGLE_CLIENT_ID);
+    // console.log("ALL ENV:", process.env);
     //routes
     app.use('/admin',foodRoutes())
     app.use('/auth',authRoutes())

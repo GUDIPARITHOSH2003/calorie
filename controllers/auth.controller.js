@@ -30,7 +30,7 @@ async function userRegister(req,res){
     }
     const hashedPassword=await bcrypt.hash(password,10)
     const user=await userModel.create({
-        name,email,password:hashedPassword,age,weight,height
+        name,email,password:hashedPassword,age,weight,height,authType:"local"
     })
     let token=jwt.sign({userId:user._id},process.env.JWT_SECRET)
     res.cookie("token",token)

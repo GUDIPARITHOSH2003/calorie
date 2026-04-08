@@ -1,4 +1,5 @@
 const express=require("express")
+const passport = require("passport");
 const authController=require("../controllers/auth.controller")
 function authRoutes(){
     const router=express.Router()
@@ -14,6 +15,23 @@ function authRoutes(){
         res.clearCookie("token")
         res.redirect('/auth')
     })
+    router.get('/google',
+        passport.authenticate('google', { scope: ['profile', 'email'] })
+    );
+    router.get('/google/callback',
+        passport.authenticate('google', { failureRedirect: '/auth' }),
+        (req, res) => {
+            const jwt = require("jsonwebtoken");
+
+            const token = jwt.sign(
+                { userId: req.user._id },
+                process.env.JWT_SECRET
+            );
+
+            res.cookie("token", token);
+            res.redirect('/user');
+        }
+    );
     return router
 }
 module.exports=authRoutes

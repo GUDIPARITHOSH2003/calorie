@@ -10,19 +10,23 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        required:true
+        required: function () {
+            return this.authType === "local";
+        }
     },
     age:{
-        type:Number,
-        required:true
+        type:Number
     },
     weight:{
-        type:Number,
-        required:true
+        type:Number
     },
     height:{
-        type:Number,
-        required:true
+        type:Number
+    },
+    authType: {
+        type: String,
+        enum: ["local", "google"],
+        default: "local"
     }
 })
 
