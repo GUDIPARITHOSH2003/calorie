@@ -8,6 +8,10 @@ const foodSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    quantity:{
+        type:Number,
+        required:true
+    },
     calories:{
         type:Number,
         required:true

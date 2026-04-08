@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>Today List</h1>
+    <div id="food-container"></div>
+    <script>
+        async function getTodayItems(){
+            try{
+                const response=await axios.get('/dashboard/today-items',{
+                    withCredentials:true
+                })
+                const data=response.data
+                const container=document.getElementById('food-container')
+                container.innerHTML=''
+                if(data.length===0){
+                    container.innerHTML='No Items added'
+                    return
+                }
+                data.forEach((item)=>{
+                    container.innerHTML+=`
+                        <div class="card">
+                            <h3>itemName: ${item.itemName}</h3>
+                            <p>Calories: ${item.calories}</p>
+                            <p>Protein: ${item.protein}</p>
+                            <p>Carbs: ${item.carbs}</p>
+                            <p>Fiber: ${item.fiber}</p>
+                            <p>Fat: ${item.fat}</p>
+                            <button onclick="deleteItem('${item._id}')" type="submit">Delete</button>
+                        </div>
+                    `
+                })
+            }catch(err){
+                console.log(err)
+            }
+        }
+        async function deleteItem(id){
+            try{
+                await axios.delete(`/dashboard/delete-item/${id}`,{
+                    withCredentials:true
+                })
+                alert('Item deleted successfully')
+                getTodayItems()
+            }catch(err){
+                console.log(err)
+            }
+        }
+        getTodayItems()
+    </script>
+</body>
+</html>
