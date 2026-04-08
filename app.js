@@ -19,10 +19,10 @@ app.use(cookieParser())
 
 async function main(){
     //db connection
-    const client=new MongoClient(process.env.MONGO_URI)
-    await client.connect()
-    db=client.db('calorie')
-    console.log("mongodb connected")
+    // const client=new MongoClient(process.env.MONGO_URI)
+    // await client.connect()
+    // db=client.db('calorie')
+    // console.log("mongodb connected")
 
     //mongoose connection
     await mongoose.connect(process.env.MONGO_URI, {
@@ -31,10 +31,10 @@ async function main(){
     console.log("Mongoose Connected");
 
     //routes
-    app.use('/admin',foodRoutes(db))
-    app.use('/auth',authRoutes(db))
-    app.use('/user',profileRoutes(db))
-    app.use('/dashboard',dashboardRoutes(db))
+    app.use('/admin',foodRoutes())
+    app.use('/auth',authRoutes())
+    app.use('/user',profileRoutes())
+    app.use('/dashboard',dashboardRoutes())
 
     //port connection
     app.listen(port,(err)=>{

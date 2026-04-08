@@ -1,6 +1,6 @@
 const express=require("express")
 const authController=require("../controllers/auth.controller")
-function authRoutes(db){
+function authRoutes(){
     const router=express.Router()
     router.post('/register',authController.userRegister)
     router.post('/login',authController.userLogin)

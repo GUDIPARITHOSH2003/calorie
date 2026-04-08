@@ -110,7 +110,7 @@
     <div>
         <%for(let i=0;i<data.length;i++){%>
             <form action="/admin/delete/<%=data[i]._id%>" method="post">
-                <h2>Name : <%=data[i].name%></h2>
+                <h2>Name : <%=data[i].itemName%></h2>
                 <h3>Quantity : <%=data[i].quantity%></h3>
                 <h3>Calories : <%=data[i].calories%></h3>
                 <h3>Protein : <%=data[i].protein%></h3>
