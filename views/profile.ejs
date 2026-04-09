@@ -54,7 +54,7 @@
             box-sizing: border-box;
         }
 
-        input {
+        input, select {
             width: 100%;
             padding: 0.75rem 1rem;
             margin-bottom: 1rem;
@@ -64,12 +64,19 @@
             color: var(--text-primary);
             transition: all 0.3s ease;
             box-sizing: border-box;
+            font-family: inherit;
+            font-size: 1rem;
         }
 
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: var(--accent);
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        select option {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
         }
 
         button {
