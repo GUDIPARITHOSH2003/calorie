@@ -30,11 +30,11 @@ app.use(cookieParser())
 
 async function main(){
     //db connection
-    // const client=new MongoClient(process.env.MONGO_URI)
-    // await client.connect()
-    // db=client.db('calorie')
-    // console.log("mongodb connected")
-
+    const client=new MongoClient(process.env.MONGO_URI)
+    await client.connect()
+    db=client.db('calorie')
+    console.log("mongodb connected")
+ 
     //mongoose connection
     await mongoose.connect(process.env.MONGO_URI, {
         dbName: "calorie"
@@ -43,7 +43,7 @@ async function main(){
     // console.log("ENV CHECK:", process.env.MY_GOOGLE_CLIENT_ID);
     // console.log("ALL ENV:", process.env);
     //routes
-    app.use('/admin',foodRoutes())
+    app.use('/admin',foodRoutes(db))
     app.use('/auth',authRoutes())
     app.use('/user',profileRoutes())
     app.use('/dashboard',dashboardRoutes())

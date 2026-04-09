@@ -35,12 +35,11 @@
             font-weight: 600;
             background: linear-gradient(to right, #60a5fa, #a78bfa);
             -webkit-background-clip: text;
-            background-clip: text;
             -webkit-text-fill-color: transparent;
             text-align: center;
         }
 
-        div, form {
+        .card {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -52,6 +51,60 @@
             max-width: 400px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             box-sizing: border-box;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .divider:not(:empty)::before {
+            margin-right: 1em;
+        }
+
+        .divider:not(:empty)::after {
+            margin-left: 1em;
+        }
+
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: white;
+            color: #333;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            gap: 10px;
+            box-sizing: border-box;
+            margin-top: 0;
+        }
+
+        .google-btn:hover {
+            background-color: #f1f5f9;
+            transform: translateY(-1px);
+            color: #333;
         }
 
         input {
@@ -107,25 +160,13 @@
     </style>
 </head>
 <body>
-    <h1>Admin Page</h1>
-    <a href="/admin/logout" class="logout-btn">Logout</a>
-    <div>
-        <form action="/admin/add-food" method="post">
-            <input type="text" name="itemName" placeholder="name">
-            <input type="number" name="quantity" step="any" placeholder="quantity">
-            <input type="number" name="calories" step="any" placeholder="calories">
-            <input type="number" name="protein" step="any" placeholder="protein">
-            <input type="number" name="carbs" step="any" placeholder="carbs">
-            <input type="number" name="fiber" step="any" placeholder="fiber">
-            <input type="number" name="fat" step="any" placeholder="fat">
-            <button type="submit">Submit</button>
+    <h1>Login</h1>
+    <div class="card">
+        <form action="/admin/login" method="post">
+            <input type="text" name="email" placeholder="email">
+            <input type="text" name="password" placeholder="password">
+            <button type="submit">Admin Login</button>
         </form>
     </div>
-    <div>
-        <form action="/admin/all-items" method="get">
-            <button type="submit">Get all items</button>
-        </form>
-    </div>
-    
 </body>
 </html>
