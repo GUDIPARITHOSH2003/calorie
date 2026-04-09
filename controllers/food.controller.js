@@ -1,6 +1,7 @@
 const express=require("express")
 const foodModel=require("../models/food.model")
 const itemModel=require("../models/items.model")
+const userModel=require("../models/user.model")
 async function addItem(req,res){
     let {itemName,quantity,calories,protein,carbs,fiber,fat}=req.body
     let user=req.user
@@ -22,7 +23,9 @@ async function getToday(req,res){
             $gte:start
         }
     })
-    res.status(200).json(data)
+    const user=await userModel.findById(userId)
+    const totalCalories=user.dailyCalories
+    res.status(200).json({data,totalCalories})
 }
 async function getTodayList(req,res){
     res.render('todayList')

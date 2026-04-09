@@ -321,7 +321,8 @@
                 const res=await axios.get('/dashboard/today-items',{
                     withCredentials:true
                 })
-                const data=res.data
+                const data=res.data.data
+                const totalCalories=res.data.totalCalories
                 const container=document.getElementById('food-container')
                 container.innerHTML=''
                 let result={
@@ -355,6 +356,12 @@
                                 <div class="stat-value fat">${result.fat}</div>
                             </div>
                         </div>
+                        <br>
+                        ${
+                            totalCalories != null 
+                            ? `<h3>You can consume ${totalCalories} calories today 🔥</h3>` 
+                            : `<h3 style="color:#94a3b8;">Set your daily calorie goal</h3>`
+                        }
                     `
                     return
                 }
@@ -388,6 +395,8 @@
                             <div class="stat-value fat">${result.fat}</div>
                         </div>
                     </div>
+                    <br>
+                    ${totalCalories!=null ? `<h3>Total calories left : ${totalCalories - result.calories}</h3>` : `<h3 style="color:#94a3b8;">Set your daily calorie goal</h3>`}
                 `
             }catch(err){
                 console.log(err)

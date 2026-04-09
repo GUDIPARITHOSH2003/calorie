@@ -222,7 +222,7 @@
                 const response=await axios.get('/dashboard/today-items',{
                     withCredentials:true
                 })
-                const data=response.data
+                const data=response.data.data
                 const container=document.getElementById('food-container')
                 container.innerHTML=''
                 if(data.length===0){
