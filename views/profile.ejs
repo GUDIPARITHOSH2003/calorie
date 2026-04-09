@@ -144,11 +144,15 @@
         </form>
     </div>
     <div>
+        <%if(error){%>
+            <script>
+                alert("Please enter age and other details");
+            </script>
+        <%}%>
         <%if(user.dailyCalories){%>
             <h3>Daily calories : <%=user.dailyCalories%></h3>
         <%}else{%>
             <a href="/user/calculate-calories">Calculate Calories</a>
-            <h3>Daily calories : <%=user.dailyCalories%></h3>
         <%}%>
     </div>
 </body>

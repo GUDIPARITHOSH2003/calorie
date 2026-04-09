@@ -40,7 +40,7 @@ async function changeFields(req,res){
 }
 async function profilePage(req,res){
     let user=req.user
-    res.render('profile',{user})
+    res.render('profile',{user,error: null})
 }
 async function calculateCalories(req,res){
     let user=await userModel.findById(req.user._id)
@@ -51,9 +51,7 @@ async function calculateCalories(req,res){
     const activityLevel = user.activityLevel;
     const goal = user.goal;
     if (!weight || !height || !age || !gender || !activityLevel || !goal) {
-        return res.status(409).json({
-            message:"Missing required fields for calculation"
-        });
+        return res.render('profile',{user,error:"Please enter age, weight, height, gender, activity level and goal"})
     }
     let bmr
     if (gender === "male") {
