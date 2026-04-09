@@ -6,6 +6,7 @@ function profileRoutes(){
     router.post('/change-email',userMiddleware.isLogged,profileController.changeEmail)
     router.post('/change-fields',userMiddleware.isLogged,profileController.changeFields)
     router.get('/profile',userMiddleware.isLogged,profileController.profilePage)
+    router.get('/calculate-calories',userMiddleware.isLogged,profileController.calculateCalories)
     router.get('/',(req,res)=>{
         res.render('home')
     })

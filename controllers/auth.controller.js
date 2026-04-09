@@ -10,6 +10,11 @@ async function userLogin(req,res){
             message:"User don't exist"
         })
     }
+    if(user.authType==='google'){
+        return res.status(409).json({
+            message:'Login with google'
+        })
+    }
     const isMatch=await bcrypt.compare(password,user.password)
     if(!isMatch){
         return res.status(409).json({
